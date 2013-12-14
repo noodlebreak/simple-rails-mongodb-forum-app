@@ -1,0 +1,42 @@
+<p style="font-style:bold" id="notice"><%= notice %></p>
+
+<p>
+  <b>Topic name:</b>
+  <%= @topic.topic_name %>
+</p>
+
+<p>
+  <b>Topic content:</b>
+  <%= @topic.topic_content %>
+</p>
+
+<p>
+  <b>Topic author:</b>
+  <%= @topic.topic_author %>
+</p>
+
+<h2>Comments</h2>
+<% if @topic.comments.size < 1 %>
+<p>No comments yet</p>
+	<% else
+		for comment in @topic.comments %>
+		<h3><%= comment.name %></h3>
+		<p><%= comment.content %></p>
+	<% end %>
+<% end %>
+
+
+<h2>Add Comment</h2>
+
+<%= form_for [@topic, Comment.new] do |f| %>
+
+	<p><%= f.label :name %> <%= f.text_field :name%></p>
+	<p><%= f.text_area :content, :rows=>10 %>
+	<p><%= f.submit %></p>
+
+<% end %>
+	
+
+
+<%= link_to 'Edit Topic', edit_topic_path(@topic) %> |
+<%= link_to 'Forum Home', topics_path %>
