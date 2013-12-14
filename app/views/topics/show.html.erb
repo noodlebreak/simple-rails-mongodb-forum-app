@@ -1,42 +1,47 @@
-<p style="font-style:bold" id="notice"><%= notice %></p>
+<%- model_class = Topic -%>
+<div class="page-header">
+  <h3>Now viewing:</h3>  <!--<%=t '.title', :default => model_class.model_name.human.titleize %>-->
+</div>
 
-<p>
-  <b>Topic name:</b>
-  <%= @topic.topic_name %>
-</p>
+<dl class="dl-horizontal">
+  <dt><strong>Topic:     </strong></dt>
+  <dd><%= @topic.topic_name %></dd>
+  <dt><strong>Topic text:</strong></dt>  <!-- <%= model_class.human_attribute_name(:topic_content) %>: -->
+  <dd><%= @topic.topic_content %></dd>
+  <dt><strong>Author:</strong></dt>
+  <dd><%= @topic.topic_author %></dd>
+</dl>
 
-<p>
-  <b>Topic content:</b>
-  <%= @topic.topic_content %>
-</p>
-
-<p>
-  <b>Topic author:</b>
-  <%= @topic.topic_author %>
-</p>
-
-<h2>Comments</h2>
+<h3>Comments</h3>
 <% if @topic.comments.size < 1 %>
 <p>No comments yet</p>
-	<% else
-		for comment in @topic.comments %>
-		<h3><%= comment.name %></h3>
-		<p><%= comment.content %></p>
-	<% end %>
+  <% else
+    for comment in @topic.comments %>
+    <p style="font-weight:bold"><%= comment.name %></p>
+    <p style="font-style:italic"><%= comment.content %></p>
+  <% end %>
 <% end %>
 
 
-<h2>Add Comment</h2>
+<h3>Add Comment</h3>
 
 <%= form_for [@topic, Comment.new] do |f| %>
 
-	<p><%= f.label :name %> <%= f.text_field :name%></p>
-	<p><%= f.text_area :content, :rows=>10 %>
-	<p><%= f.submit %></p>
+  <p><%= f.label :name %> <%= f.text_field :name%></p>
+  <p><%= f.text_area :content, :rows=>10 %>
+  <p><%= f.submit %></p>
 
 <% end %>
-	
 
 
-<%= link_to 'Edit Topic', edit_topic_path(@topic) %> |
-<%= link_to 'Forum Home', topics_path %>
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              topics_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_topic_path(@topic), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              topic_path(@topic),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
